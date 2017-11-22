@@ -1,0 +1,1 @@
+# 08-singleton-factory-strategy
