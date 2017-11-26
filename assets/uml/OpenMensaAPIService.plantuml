@@ -10,6 +10,7 @@ package de.fhro.inf.prg3.a08 {
         class OpenMensaAPIService {
             -{static} instance: OpenMensaAPIService
             -mensaApiInstance: OpenMensaAPI
+            -OpenMensaAPIService()
             +{static} getInstance(): OpenMensaAPIService
             +getApi(): OpenMensaAPI
         }
