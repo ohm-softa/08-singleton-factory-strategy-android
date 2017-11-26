@@ -46,7 +46,7 @@ Android Spinners have to different modes:
 * dialog
 * dropdown
 
-_Remark: a dialog is a view element that lies over all other elements and prohibits all interaction with the underlying view elements until the dialog is closed._
+_Remark: a dialog is a view element that lies over all other elements and prohibits all interactions with the underlying view elements until the dialog is closed._
 
 You can set the mode in the XML element like this:
 
@@ -70,13 +70,15 @@ Additionally to the vegetarian filter we already implemented in the last assignm
 * No pork - show all meals except those containing pork
 * No soy - show all meals except those containing soy
 
-To implement the filter mechanism we could just extend the existing logic by adding some more `if-else` statements but this approach isn't very flexible and results in a huge code statement which isn't readable any more.
+To implement the filter mechanism we could just extend the existing logic by adding some more `if-else` statements.
+This approach isn't very flexible and results in a huge code statement which isn't readable any more so that's not what we want.
 
 The strategy pattern is always a good choice if you have different implementations giving you the same **kind** of result (e.g. all implementations return a list of meals).
 So we decided to implement the filtering as different strategies.
 
 The following UML is meant as an implementation advise.
 You don't have to implement it this way but it might result in less code (and save you time).
+It is also a nice application of inheritance to avoid duplicates and reduce the amount of code.
 
 ![Filtering strategy](./assets/images/FilteringStrategies.svg)
 
@@ -85,6 +87,77 @@ _Hints: To avoid duplicate code (DRY - don't repeat yourself) you can extract th
 The remaining problem is how to get an instance of the currently required strategy.
 This is where the factory pattern comes into play.
 
-A factory ensures that a suitable implementation is returned.
-There are different options to control which implementation is returned by the factory (e.g. enums, string keys, dumb integers).
-As the Android spinner gives you the position of the element which is currently selected and the 
+![FilterFactory spec](./assets/images/FilteringFactory.svg)
+
+A factorys responsibility is to instantiate and manage instances of different implementations of the same base class or interface.
+There are different options to control which implementation is returned by the factory (e.g. enums, string keys, dumb integers, environment variables,...).
+As the Android spinner passes the position of the element which is currently selected to the handler function (we'll cover this in a second) and the `ArrayAdater<>` implements a method to resolve the element of a given position (`getItem(int position)`) one possibility to resolve the filter is to pass the selected value of the spinner to the factory (this is the `key` parameter of the factory method `getStrategy(...)`).
+
+1. Declare the interface `MealsFilter`
+2. Implement the `AllMealsStrategy` class
+3. _Optionally:_ implement the `FilterBase` class (it's totally fine for now to implement all filters without an base class)
+4. Implement the filters `VegetarianStrategy`, `NoPorkStrategy`, `NoSoyStrategy`
+5. Implement the `FilterFactory` class
+
+_Remark: again the given UML for the FilterFactory is just a recommondation. You don't have to stick to this draft._
+
+## Wire up all components
+
+The given `MainActivity` differs slightly from the one in the solution of the last assignment.
+This is mainly due to the fact that it should be easier for you to perform the refactoring as it was meant to be.
+
+### A word about handlers
+
+It's best practice in Android to implement the required handler interfaces (like the interface `View.OnClickListener`) as part of the activity where they are needed.
+This enables you to pass just a `this` reference as handler instance to the click handler.
+The following snippet should make this clear:
+
+```java
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    //...
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //retrieve a reference to the button
+        Button b = findViewById(R.id.my_button);
+
+        //pass 'this' as OnClickListener
+        b.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        // handle the click event
+    }
+}
+```
+
+### A word about the Android spinner
+
+The mechanism to pass values to an Android spinner is pretty much the same like to pass values into a `ListView`.
+You need to set an `ArrayAdapter<>` instance (or a subclass of it) at the spinner instance and pass the values to display to the `ArrayAdapter<>`.
+
+_Side note: don't get confused, the given source code does not pass the values directly but loads them from the file `strings.xml` as this is best practice for internatialization (i18n) but that's a topic for later._
+
+To get notified whenever the selected value of a spinner changes it offers the method `setOnItemSelectedListener(AdapterView.OnItemSelectedListener listener)`.
+The signature of interface `AdapterView.OnItemSelectedListener` looks like this:
+
+```java
+public interface OnItemSelectedListener {
+    void onItemSelected(AdapterView<?> parent, View view, int position, long id);
+
+    void onNothingSelected(AdapterView<?> parent);
+}
+```
+
+It's on you to decide if you want to pass the handler as an anonymous inner class or to implement the interface within your `MainActivity` class and pass a `this` reference as handler.
+Keep in mind that regardless of which variant you choose, you **must** implement both interface methods (`onItemSelected(...)` and `onNothingSelected(...)`).
+
+1. Register an `AdapterView.OnItemSelectedListener` at the `filterSpinner` instance.
+2. Retrieve a reference to the `OpenMensaAPIService` in the implementation of the method `onItemSelected(...)` method. `enqueue(...)` an call and handle the result with an implementation of `Callback<>` (again: choose one of the two described methods how handlers can be implemented).
+3. Resolve the currently selected value as already described (_hint: `getItem(int position`_).
+4. Get an instance of the `MealsFilter` interface by using your `MealsFilterFactory` implementation.
+5. Filter the retrieved list of meals and pass them to the `ListView` by adding them to the `mealsArrayAdapter` (remember to `clear` the adapter previously)

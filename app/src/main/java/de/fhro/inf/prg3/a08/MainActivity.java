@@ -4,10 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.ListView;
 
-import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -28,11 +27,13 @@ public class MainActivity extends AppCompatActivity {
 
     private final SimpleDateFormat dateFormat;
     private final OpenMensaAPI openMensaAPI;
-    private ArrayAdapter<Meal> mealArrayAdapter;
+    private ArrayAdapter<Meal> mealsArrayAdapter;
+    private ArrayAdapter<CharSequence> spinnerAdapter;
 
     public MainActivity() {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
+        /* TODO extract me into a singleton...please :) */
         /* create Retrofit instance to get a OpenMensaAPI proxy object */
         Retrofit retrofit = new Retrofit.Builder()
                 /* no type adapters are required so the default GSON converter is fine */
@@ -52,18 +53,28 @@ public class MainActivity extends AppCompatActivity {
 
 
         /* create the ArrayAdapter without an given list instance */
-        mealArrayAdapter = new ArrayAdapter<>(
+        mealsArrayAdapter = new ArrayAdapter<>(
                 this,
                 R.layout.meal_entry
         );
 
+        /* create an ArrayAdapter to fill the spinner */
+        spinnerAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.meals_filter_items,
+                R.layout.support_simple_spinner_dropdown_item
+        );
+
         /* 'caching' the reference to the ListView */
         final ListView mealsListView = findViewById(R.id.mealsList);
-        mealsListView.setAdapter(mealArrayAdapter);
+        mealsListView.setAdapter(mealsArrayAdapter);
 
+        final Spinner filterSpinner = findViewById(R.id.filterSpinner);
+        filterSpinner.setAdapter(spinnerAdapter);
 
-        /* TODO the following code has to changed to adopt the spinner */
-        /* register click handler */
+        /* TODO the following code differs from the solution of the last assignment to resolve errors because the refresh button and the vegetarian checkbox are already gone
+         * you may keep most of the business logic *
+         * register click handler */
         findViewById(R.id.filterSpinner).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,22 +86,23 @@ public class MainActivity extends AppCompatActivity {
                         /* check if response code was 2xx */
                         if (response.isSuccessful()) {
                             /* remove elements from the adapter */
-                            mealArrayAdapter.clear();
+                            mealsArrayAdapter.clear();
                             /* unwrap the retrieved meals */
                             List<Meal> retrievedMeals = response.body();
 
                             /* Check if we should filter for vegetarian meals */
+                            /* TODO please fix me - I'm totally useless because there's no checkbox anymore */
                             if (false) {
                                 List<Meal> vegetarian = MealsFilterUtility.filterForVegetarian(retrievedMeals);
 
                                 /* add all filtered meals to the adapter to display them in the view */
-                                mealArrayAdapter.addAll(vegetarian);
+                                mealsArrayAdapter.addAll(vegetarian);
                             } else {
                                 /* add all retrieved meals to the adapter because we haven't to filter for anything */
-                                mealArrayAdapter.addAll(retrievedMeals);
+                                mealsArrayAdapter.addAll(retrievedMeals);
                             }
                         } else {
-                            /* display an error message if response code was not one of 2xx */
+                            /* display an error message if response code was not 2xx */
                             Toast.makeText(
                                     MainActivity.this,
                                     R.string.api_failure_toast,
