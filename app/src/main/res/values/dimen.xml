@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_default_top">16dp</dimen>
+    <dimen name="margin_btn_left">16dp</dimen>
+    <dimen name="margin_checkbox_right">16dp</dimen>
+    <dimen name="margin_checkbox_top">22dp</dimen>
+</resources>

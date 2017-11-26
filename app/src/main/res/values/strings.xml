@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">08-singleton-factory-strategy</string>
+    <string name="no_filter_selected_toast">You didn\'t select a filter</string>
+    <string name="api_failure_toast">An error occurred while retrieving meals</string>
+    <string-array name="meals_filter_items">
+        <item>All</item>
+        <item>Vegetarian</item>
+        <item>No pork</item>
+        <item>No soy</item>
+    </string-array>
+</resources>
