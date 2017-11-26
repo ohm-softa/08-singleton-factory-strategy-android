@@ -1,0 +1,9 @@
+@startuml FilteringFactory
+
+package de.fhro.inf.prg3.a08.filtering {
+    abstract class StrategyFactory {
+        +{static} getStrategy(key: String): MealsFilter
+    }
+}
+
+@enduml

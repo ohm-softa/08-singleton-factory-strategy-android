@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private final SimpleDateFormat dateFormat;
     private final OpenMensaAPI openMensaAPI;
     private ArrayAdapter<Meal> mealArrayAdapter;
-    private CheckBox vegetarianCheckbox;
 
     public MainActivity() {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -51,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         // this will inflate the layout from res/layout/activity_main.xml
         setContentView(R.layout.activity_main);
 
-        /* 'caching' the reference to the CheckBox */
-        vegetarianCheckbox = findViewById(R.id.vegetarianChBox);
 
         /* create the ArrayAdapter without an given list instance */
         mealArrayAdapter = new ArrayAdapter<>(
@@ -61,14 +58,13 @@ public class MainActivity extends AppCompatActivity {
         );
 
         /* 'caching' the reference to the ListView */
-        final ListView mealsListView = findViewById(R.id.mealsListView);
+        final ListView mealsListView = findViewById(R.id.mealsList);
         mealsListView.setAdapter(mealArrayAdapter);
 
-        /* retrieving a reference to the refresh button */
-        Button button = findViewById(R.id.refreshButton);
 
+        /* TODO the following code has to changed to adopt the spinner */
         /* register click handler */
-        button.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.filterSpinner).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /* execute call to the OpenMensaAPI
@@ -84,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                             List<Meal> retrievedMeals = response.body();
 
                             /* Check if we should filter for vegetarian meals */
-                            if (vegetarianCheckbox.isChecked()) {
+                            if (false) {
                                 List<Meal> vegetarian = MealsFilterUtility.filterForVegetarian(retrievedMeals);
 
                                 /* add all filtered meals to the adapter to display them in the view */

@@ -1,0 +1,19 @@
+@startuml OpenMensaAPIService
+
+package de.fhro.inf.prg3.a08 {
+
+    interface OpenMensaAPI {
+        getMeals(date: String): Call<List<Meal>>
+    }
+
+    package services {
+        class OpenMensaAPIService {
+            -{static} instance: OpenMensaAPIService
+            -mensaApiInstance: OpenMensaAPI
+            +{static} getInstance(): OpenMensaAPIService
+            +getApi(): OpenMensaAPI
+        }
+    }
+}
+
+@enduml
