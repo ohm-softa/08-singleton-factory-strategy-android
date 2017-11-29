@@ -3,7 +3,7 @@
 package de.fhro.inf.prg3.a08.filtering {
 
     interface MealsFilter {
-        filter(meals: List<Meal>): List<Meals>
+        filter(meals: List<Meal>): List<Meal>
     }
 
     class AllMealsStrategy implements MealsFilter {
