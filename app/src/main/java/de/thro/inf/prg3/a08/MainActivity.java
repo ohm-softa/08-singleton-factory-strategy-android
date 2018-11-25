@@ -1,4 +1,4 @@
-package de.fhro.inf.prg3.a08;
+package de.thro.inf.prg3.a08;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import de.fhro.inf.prg3.a08.api.OpenMensaAPI;
-import de.fhro.inf.prg3.a08.model.Meal;
-import de.fhro.inf.prg3.a08.utils.MealsFilterUtility;
+import de.thro.inf.prg3.a08.api.OpenMensaAPI;
+import de.thro.inf.prg3.a08.model.Meal;
+import de.thro.inf.prg3.a08.utils.MealsFilterUtility;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

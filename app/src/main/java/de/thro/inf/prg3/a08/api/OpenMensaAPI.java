@@ -1,8 +1,8 @@
-package de.fhro.inf.prg3.a08.api;
+package de.thro.inf.prg3.a08.api;
 
 import java.util.List;
 
-import de.fhro.inf.prg3.a08.model.Meal;
+import de.thro.inf.prg3.a08.model.Meal;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

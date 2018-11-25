@@ -1,4 +1,4 @@
-package de.fhro.inf.prg3.a08;
+package de.thro.inf.prg3.a08;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,9 +1,9 @@
-package de.fhro.inf.prg3.a08.utils;
+package de.thro.inf.prg3.a08.utils;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import de.fhro.inf.prg3.a08.model.Meal;
+import de.thro.inf.prg3.a08.model.Meal;
 
 /**
  * Simple utility class to extract the logic of filter

@@ -1,4 +1,4 @@
-package de.fhro.inf.prg3.a08.test;
+package de.thro.inf.prg3.a08.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
 
-import de.fhro.inf.prg3.a08.api.OpenMensaAPI;
-import de.fhro.inf.prg3.a08.model.Meal;
+import de.thro.inf.prg3.a08.api.OpenMensaAPI;
+import de.thro.inf.prg3.a08.model.Meal;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
