@@ -3,6 +3,7 @@ package de.thro.inf.prg3.a08.model;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,8 +18,41 @@ public class Meal {
     private String category;
     private List<String> notes;
 
+    /**
+     * Default constructor
+     * needed for JSON/GSON serialization
+     */
     public Meal() {
         notes = new LinkedList<>();
+    }
+
+    /**
+     * Overload to initialize all fields at once
+     * @param id id of the meal
+     * @param name display name of the meal
+     * @param category category of the meal (e.g. dessert or self-service)
+     * @param notes ingredients and other notes to the meal
+     */
+    public Meal(int id, String name, String category, List<String> notes) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.notes = notes;
+    }
+
+    /**
+     * Overload to initialize all fields at once
+     * notes are passed as varargs to ease manual initialization
+     * @param id id of the meal
+     * @param name display name of the meal
+     * @param category category of the meal (e.g. dessert or self-service)
+     * @param notes ingredients and other notes to the meal
+     */
+    public Meal(int id, String name, String category, String... notes) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.notes = Arrays.asList(notes);
     }
 
     public int getId() {

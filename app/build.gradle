@@ -49,10 +49,6 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5_version}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit5_version}"
 
-    // (Optional) If you also have JUnit 4-based tests
-    testImplementation "junit:junit:4.12"
-    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${junit5_version}"
-
     // (Optional) If you need "Parameterized Tests"
     testImplementation "org.junit.jupiter:junit-jupiter-params:${junit5_version}"
 
