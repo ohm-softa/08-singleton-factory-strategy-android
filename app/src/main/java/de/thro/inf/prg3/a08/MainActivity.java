@@ -1,8 +1,9 @@
 package de.thro.inf.prg3.a08;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -75,11 +76,11 @@ public class MainActivity extends AppCompatActivity {
         /* TODO the following code differs from the solution of the last assignment to resolve errors because the refresh button and the vegetarian checkbox are already gone
          * you may keep most of the business logic *
          * register click handler */
-        findViewById(R.id.filterSpinner).setOnClickListener(new View.OnClickListener() {
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 /* execute call to the OpenMensaAPI
-                * note that the .enqueue(...) method is used instead of .execute() */
+                 * note that the .enqueue(...) method is used instead of .execute() */
                 openMensaAPI.getMeals(dateFormat.format(new Date())).enqueue(new Callback<List<Meal>>() {
                     @Override
                     public void onResponse(Call<List<Meal>> call, Response<List<Meal>> response) {
@@ -121,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
                         ).show();
                     }
                 });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }
